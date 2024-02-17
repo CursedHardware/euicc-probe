@@ -103,9 +103,9 @@ object OpenMobileAPI {
                 try {
                     val session = reader.openSession()
                     val channel = session.openLogicalChannel(ISD_R_APPLET_ID)
+                    put(reader.name, !channel.isClosed)
                     if (!channel.isClosed) channel.close()
                     if (!session.isClosed) session.closeChannels()
-                    put(reader.name, true)
                 } catch (_: SecurityException) {
                     put(reader.name, true)
                 } catch (e: Throwable) {
