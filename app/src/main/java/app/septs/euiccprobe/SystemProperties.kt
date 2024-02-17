@@ -6,17 +6,15 @@ object SystemProperties {
         return p.inputStream.reader().readText().trim().ifEmpty { null }
     }
 
-    fun getAll(): Map<String, String> {
+    fun getAll() = buildMap {
         val p = Runtime.getRuntime().exec("getprop")
-        return buildMap {
-            p.inputStream.reader().forEachLine { line ->
-                val name = line.indexOf('[')
-                    .let { (it + 1)..<line.indexOf(']', it) }
-                val value = line.indexOf('[', name.last)
-                    .let { (it + 1)..<line.indexOf(']', it) }
-                if (value.isEmpty()) return@forEachLine
-                put(line.slice(name), line.slice(value))
-            }
+        p.inputStream.reader().forEachLine { line ->
+            val name = line.indexOf('[')
+                .let { (it + 1)..<line.indexOf(']', it) }
+            val value = line.indexOf('[', name.last)
+                .let { (it + 1)..<line.indexOf(']', it) }
+            if (value.isEmpty()) return@forEachLine
+            put(line.slice(name), line.slice(value))
         }
     }
 
