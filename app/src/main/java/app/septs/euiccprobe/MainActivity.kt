@@ -11,6 +11,7 @@ import io.noties.markwon.Markwon
 import io.noties.markwon.ext.tasklist.TaskListPlugin
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 
@@ -45,7 +46,10 @@ class MainActivity : AppCompatActivity() {
     @Suppress("SpellCheckingInspection")
     private suspend fun init() = withContext(Dispatchers.Main) {
         val markdown = buildString {
-            appendLine("${Build.BRAND} ${Build.MODEL} (${Build.MANUFACTURER})")
+            appendLine(runBlocking {
+                val model = Build.MODEL.removePrefix(Build.BRAND).trim()
+                return@runBlocking "${Build.BRAND} $model (${Build.MANUFACTURER})"
+            })
             appendLine()
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 val state = SystemService.getEuiccServiceState(applicationContext)
