@@ -15,30 +15,6 @@ object SystemService {
         Disabled,
     }
 
-    enum class SEBypass {
-        Unsupported,
-        CannotBeBypassed,
-        CanBeBypassed,
-        FullAccess,
-    }
-
-    @RequiresApi(Build.VERSION_CODES.P)
-    fun getSEBypassState(context: Context): SEBypass {
-        val pkgName = "com.android.se"
-        if (!hasService(context, pkgName)) {
-            return SEBypass.Unsupported
-        }
-        if (SystemProperties.get("ro.debuggable")?.toInt() != 1) {
-            return SEBypass.CannotBeBypassed
-        }
-        val rule = SystemProperties.get("service.seek")
-            ?: SystemProperties.get("persist.service.seek")
-        if (rule.orEmpty().contains("fullaccess")) {
-            return SEBypass.FullAccess
-        }
-        return SEBypass.CanBeBypassed
-    }
-
     fun getSystemFeatures(context: Context): Map<String, Boolean> {
         val features = arrayOf(
             "android.hardware.telephony",

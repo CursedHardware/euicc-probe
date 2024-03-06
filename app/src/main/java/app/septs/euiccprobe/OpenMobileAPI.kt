@@ -33,6 +33,31 @@ object OpenMobileAPI {
         Available,
     }
 
+
+    enum class SEBypass {
+        Unavailable,
+        CannotBeBypassed,
+        CanBeBypassed,
+        FullAccess,
+    }
+
+    @RequiresApi(Build.VERSION_CODES.P)
+    fun getBypassState(context: Context): SEBypass {
+        val pkgName = "com.android.se"
+        if (!SystemService.hasService(context, pkgName)) {
+            return SEBypass.Unavailable
+        }
+        if (SystemProperties.get("ro.debuggable")?.toInt() != 1) {
+            return SEBypass.CannotBeBypassed
+        }
+        val rule = SystemProperties.get("service.seek")
+            ?: SystemProperties.get("persist.service.seek")
+        if (rule.orEmpty().contains("fullaccess")) {
+            return SEBypass.FullAccess
+        }
+        return SEBypass.CanBeBypassed
+    }
+
     suspend fun getSlots(context: Context): Result {
         val result = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             fromBuiltin(context)

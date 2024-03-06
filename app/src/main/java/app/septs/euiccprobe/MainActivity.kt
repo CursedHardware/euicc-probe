@@ -56,11 +56,6 @@ class MainActivity : AppCompatActivity() {
                 appendLine()
                 appendLine("eUICC System Service: $state")
             }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                val state = SystemService.getSEBypassState(applicationContext)
-                appendLine()
-                appendLine("Secure Elements: $state")
-            }
             SystemService.getSystemFeatures(applicationContext).let {
                 appendLine()
                 appendLine("System Features:")
@@ -103,6 +98,10 @@ class MainActivity : AppCompatActivity() {
                 appendLine("Open Mobile API:")
                 appendLine("- Backend: ${result.backend}")
                 appendLine("- State: ${result.state}")
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    val state = OpenMobileAPI.getBypassState(applicationContext)
+                    appendLine("- Bypass: $state")
+                }
                 if (result.state == OpenMobileAPI.State.Available) {
                     for (slot in result.slots) {
                         val state = if (slot.value) "Available" else "Unavailable"
