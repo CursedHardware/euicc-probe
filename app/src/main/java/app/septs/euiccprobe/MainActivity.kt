@@ -47,10 +47,23 @@ class MainActivity : AppCompatActivity() {
     private suspend fun init() = withContext(Dispatchers.Main) {
         val markdown = buildString {
             appendLine(runBlocking {
-                val model = Build.MODEL.removePrefix(Build.BRAND).trim()
-                return@runBlocking "${Build.BRAND} $model (${Build.MANUFACTURER})"
+                val parts = mutableListOf(
+                    Build.BRAND,
+                    Build.MODEL.removePrefix(Build.BRAND).trim(),
+                )
+                if (!Build.BRAND.contentEquals(Build.MANUFACTURER, ignoreCase = true)) {
+                    parts.add("(${Build.MANUFACTURER})")
+                }
+                parts.joinToString(" ")
             })
             appendLine()
+            appendLine(runBlocking {
+                val parts = mutableListOf(
+                    "Android ${Build.VERSION.RELEASE}",
+                )
+                Version.getVersion()?.let { parts.add(it) }
+                parts.joinToString("; ")
+            })
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 val state = SystemService.getEuiccServiceState(applicationContext)
                 appendLine()
