@@ -46,22 +46,13 @@ class MainActivity : AppCompatActivity() {
     @Suppress("SpellCheckingInspection")
     private suspend fun init() = withContext(Dispatchers.Main) {
         val markdown = buildString {
-            appendLine(runBlocking {
-                val parts = mutableListOf(
-                    Build.BRAND,
-                    Build.MODEL.removePrefix(Build.BRAND).trim(),
-                )
-                if (!Build.BRAND.contentEquals(Build.MANUFACTURER, ignoreCase = true)) {
-                    parts.add("(${Build.MANUFACTURER})")
-                }
-                parts.joinToString(" ")
-            })
+            appendLine(Version.getModelName())
             appendLine()
             appendLine(runBlocking {
                 val parts = mutableListOf(
                     "Android ${Build.VERSION.RELEASE}",
                 )
-                Version.getVersion()?.let { parts.add(it) }
+                Version.getFirmwareVersion()?.let { parts.add(it) }
                 parts.joinToString("; ")
             })
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
