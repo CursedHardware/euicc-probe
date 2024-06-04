@@ -16,9 +16,17 @@ object Version {
     }
 
     fun getFirmwareVersion(): String? {
-        val properties = SystemProperties.getAll()
-        return properties["ro.mi.os.version.code"]?.let { "HyperOS $it" }
-            ?: properties["ro.miui.ui.version.name"]?.let { "MIUI $it" }
-            ?: properties["ro.build.version.oneui"]?.let { "OneUI $it" }
+        val fields = listOf(
+            Pair("ro.mi.os.version.code", "HyperOS"),
+            Pair("ro.miui.ui.version.name", "MIUI"),
+            Pair("ro.build.version.oneui", "OneUI"),
+        )
+        for (pair in fields) {
+            val version = SystemProperties[pair.first]
+            if (version.isNotEmpty()) {
+                return "${pair.second} $version"
+            }
+        }
+        return null
     }
 }
