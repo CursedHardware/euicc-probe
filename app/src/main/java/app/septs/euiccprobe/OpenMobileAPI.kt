@@ -47,15 +47,13 @@ object OpenMobileAPI {
         if (!SystemService.hasService(context, pkgName)) {
             return SEBypass.Unavailable
         }
-        if (SystemProperties.get("ro.debuggable")?.toInt() != 1) {
+        if (SystemProperties["ro.debuggable"].toInt() != 1) {
             return SEBypass.CannotBeBypassed
         }
-        val rule = SystemProperties.get("service.seek")
-            ?: SystemProperties.get("persist.service.seek")
-        if (rule.orEmpty().contains("fullaccess")) {
-            return SEBypass.FullAccess
-        }
-        return SEBypass.CanBeBypassed
+        val isFullAccess = SystemProperties["service.seek"]
+            .ifEmpty { SystemProperties["persist.service.seek"] }
+            .contains("fullaccess")
+        return if (isFullAccess) SEBypass.FullAccess else SEBypass.CanBeBypassed
     }
 
     suspend fun getSlots(context: Context): Result {
