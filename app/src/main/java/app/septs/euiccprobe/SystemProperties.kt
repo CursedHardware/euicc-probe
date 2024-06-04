@@ -1,12 +1,8 @@
 package app.septs.euiccprobe
 
 object SystemProperties {
-    operator fun get(name: String): String {
-        val p = Runtime.getRuntime().exec(arrayOf("getprop", name))
-        return p.inputStream.reader().readText().trim()
-    }
-
-    fun getAll() = buildMap {
+    private val properties by lazy {
+        val properties = mutableMapOf<String, String>()
         val p = Runtime.getRuntime().exec("getprop")
         for (line in p.inputStream.reader().readLines()) {
             val name = line.indexOf('[')
@@ -14,12 +10,16 @@ object SystemProperties {
             val value = line.indexOf('[', name.last)
                 .let { (it + 1)..<line.indexOf(']', it) }
             if (value.isEmpty()) continue
-            put(line.slice(name), line.slice(value))
+            properties[line.slice(name)] = line.slice(value)
         }
+        return@lazy properties
+    }
+
+    operator fun get(name: String): String {
+        return properties[name].orEmpty()
     }
 
     fun pick(vararg names: String) = buildMap {
-        val properties = getAll()
         for (name in names) {
             if (properties[name] == null) continue
             put(name, properties[name])
