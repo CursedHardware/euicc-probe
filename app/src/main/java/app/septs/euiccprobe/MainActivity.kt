@@ -74,7 +74,12 @@ class MainActivity : AppCompatActivity() {
                 appendLine()
                 appendLine("System LPAs:")
                 for (pkg in pkgs) {
-                    appendLine("- ${pkg.packageName}")
+                    val label = SystemApps.getApplicationLabel(packageManager, pkg.packageName)
+                    if (label != null) {
+                        appendLine("- $label (${pkg.packageName})")
+                    } else {
+                        appendLine("- ${pkg.packageName} [uninstalled]")
+                    }
                 }
             }
             val properties = arrayOf(

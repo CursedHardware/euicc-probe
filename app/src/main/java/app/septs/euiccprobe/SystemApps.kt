@@ -1,5 +1,7 @@
 package app.septs.euiccprobe
 
+import android.content.Context
+import android.content.pm.PackageManager
 import java.io.File
 
 object SystemApps {
@@ -25,13 +27,21 @@ object SystemApps {
                 if (!file.canRead()) continue
                 if (!file.name.startsWith("privapp-permissions")) continue
                 if (file.extension != "xml") continue
-                if (!file.name.contains("permission")) continue
                 file.inputStream().use(parser::parse)
             }
         }
         return parser.filter { perm ->
             perm.allowedPermissions.containsAll(requiredPermissions) &&
                     perm.allowedPermissions.any(optionalPermissions::contains)
+        }
+    }
+
+    fun getApplicationLabel(pm: PackageManager, packageName: String): String? {
+        return try {
+            val appInfo = pm.getApplicationInfo(packageName, PackageManager.GET_ACTIVITIES)
+            pm.getApplicationLabel(appInfo).toString()
+        } catch (e: Exception) {
+            null
         }
     }
 }
