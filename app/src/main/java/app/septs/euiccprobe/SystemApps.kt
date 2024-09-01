@@ -3,10 +3,14 @@ package app.septs.euiccprobe
 import java.io.File
 
 object SystemApps {
-    private val perms = setOf(
+    private val requiredPermissions = setOf(
         "android.permission.MODIFY_PHONE_STATE",
         "android.permission.READ_PRIVILEGED_PHONE_STATE",
         "android.permission.WRITE_EMBEDDED_SUBSCRIPTIONS",
+    )
+
+    private val optionalPermissions = setOf(
+        "android.permission.SECURE_ELEMENT_PRIVILEGED_OPERATION",
         "com.android.permission.WRITE_EMBEDDED_SUBSCRIPTIONS",
     )
 
@@ -25,6 +29,9 @@ object SystemApps {
                 file.inputStream().use(parser::parse)
             }
         }
-        return parser.filter { perm -> perm.allowedPermissions.containsAll(perms) }
+        return parser.filter { perm ->
+            perm.allowedPermissions.containsAll(requiredPermissions) &&
+                    perm.allowedPermissions.any(optionalPermissions::contains)
+        }
     }
 }
