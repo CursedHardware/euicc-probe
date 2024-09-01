@@ -67,21 +67,14 @@ class MainActivity : AppCompatActivity() {
                     appendLine("- [${if (feature.value) "x" else " "}] ${feature.key}")
                 }
             }
-            SystemApps.getSystemLPAs(applicationContext).let { apps ->
-                if (apps.isEmpty()) {
+            SystemApps.getSystemLPAs().let { pkgs ->
+                if (pkgs.isEmpty()) {
                     return@let
                 }
                 appendLine()
                 appendLine("System LPAs:")
-                for (app in apps) {
-                    val label = packageManager.getApplicationLabel(app).let {
-                        if (it.contentEquals(app.packageName)) {
-                            it
-                        } else {
-                            "$it (${app.packageName})"
-                        }
-                    }
-                    appendLine("- $label")
+                for (pkg in pkgs) {
+                    appendLine("- ${pkg.packageName}")
                 }
             }
             val properties = arrayOf(

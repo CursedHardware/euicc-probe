@@ -1,45 +1,30 @@
 package app.septs.euiccprobe
 
-import android.content.Context
-import android.content.pm.ApplicationInfo
-import android.content.pm.PackageManager
-import android.os.Build
+import java.io.File
 
 object SystemApps {
-    private val perms = arrayOf(
-        "android.permission.BIND_EUICC_SERVICE",
-        "android.permission.SECURE_ELEMENT_PRIVILEGED_OPERATION",
+    private val perms = setOf(
+        "android.permission.MODIFY_PHONE_STATE",
+        "android.permission.READ_PRIVILEGED_PHONE_STATE",
         "android.permission.WRITE_EMBEDDED_SUBSCRIPTIONS",
         "com.android.permission.WRITE_EMBEDDED_SUBSCRIPTIONS",
     )
 
-    fun getSystemLPAs(context: Context): List<ApplicationInfo> {
-        val namePattern = Regex("lpa|euicc|esim")
-        return getSystemApps(context.packageManager).filter { app ->
-            when {
-                app.packageName.startsWith("com.android") -> false
-                app.packageName.contains(namePattern) -> perms.any {
-                    hasPermission(context.packageManager, it, app.packageName)
-                }
-
-                else -> false
+    fun getSystemLPAs(): List<PrivAppPermissionParser.Companion.PrivAppPermission> {
+        val directories = listOf("/", "/system", "/vendor", "/product")
+        val parser = PrivAppPermissionParser()
+        for (directory in directories) {
+            val permissions = File(directory, "etc/permissions/")
+            if (!permissions.exists()) continue
+            val files = permissions.listFiles() ?: continue
+            for (file in files) {
+                if (!file.canRead()) continue
+                if (!file.name.startsWith("privapp-permissions")) continue
+                if (file.extension != "xml") continue
+                if (!file.name.contains("permission")) continue
+                file.inputStream().use(parser::parse)
             }
         }
-    }
-
-    private fun getSystemApps(pm: PackageManager): List<ApplicationInfo> {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            return emptyList()
-        }
-        val flags = PackageManager.MATCH_SYSTEM_ONLY
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            pm.getInstalledApplications(PackageManager.ApplicationInfoFlags.of(flags.toLong()))
-        } else {
-            pm.getInstalledApplications(flags)
-        }
-    }
-
-    private fun hasPermission(pm: PackageManager, permName: String, pkgName: String): Boolean {
-        return pm.checkPermission(permName, pkgName) == PackageManager.PERMISSION_GRANTED
+        return parser.filter { perm -> perm.allowedPermissions.containsAll(perms) }
     }
 }
