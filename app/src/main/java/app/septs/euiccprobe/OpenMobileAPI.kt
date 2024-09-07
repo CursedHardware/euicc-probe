@@ -47,7 +47,7 @@ object OpenMobileAPI {
         if (!SystemService.hasService(context, pkgName)) {
             return SEBypass.Unavailable
         }
-        if (SystemProperties["ro.debuggable"].toInt() != 1) {
+        if (SystemProperties["ro.debuggable"].toIntOrNull() != 1) {
             return SEBypass.CannotBeBypassed
         }
         val isFullAccess = SystemProperties["service.seek"]
