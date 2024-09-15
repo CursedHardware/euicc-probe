@@ -3,12 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission
-        android:name="android.permission.QUERY_ALL_PACKAGES"
-        tools:ignore="QueryAllPackagesPermission" />
-    <uses-permission android:name="org.simalliance.openmobileapi.SMARTCARD" />
+        android:name="org.simalliance.openmobileapi.SMARTCARD"
+        android:maxSdkVersion="28" />
 
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -32,4 +31,18 @@
         </activity>
     </application>
 
+    <queries>
+        <!-- https://developer.android.com/reference/android/se/omapi/package-summary -->
+        <package android:name="com.android.se" />
+        <!-- https://github.com/seek-for-android -->
+        <package android:name="org.simalliance.openmobileapi.service" />
+        <!-- Google SIM Manager -->
+        <package android:name="com.google.android.euicc" />
+        <!-- MIUI LPA -->
+        <package android:name="com.miui.euicc" />
+        <!-- Samsung LPA -->
+        <package android:name="com.samsung.euicc" />
+        <!-- https://github.com/QueallyTech/OMAPI-Bypass -->
+        <package android:name="com.queallytech.omapi" />
+    </queries>
 </manifest>

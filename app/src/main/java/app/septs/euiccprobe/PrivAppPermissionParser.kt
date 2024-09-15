@@ -4,6 +4,7 @@ import android.util.Xml
 import app.septs.euiccprobe.PrivAppPermissionParser.Companion.PrivAppPermission
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
+import java.io.File
 import java.io.IOException
 import java.io.InputStream
 import java.nio.charset.Charset
@@ -15,6 +16,30 @@ class PrivAppPermissionParser : Iterable<PrivAppPermission> {
             val allowedPermissions: MutableSet<String>,
             val deniedPermissions: MutableSet<String>
         )
+
+        fun loadPermissions(): List<PrivAppPermission> {
+            val permissions = listOf(
+                File("/etc/permissions/"),
+                File("/system/etc/permissions/"),
+                File("/vendor/etc/permissions/"),
+                File("/product/etc/permissions/"),
+            )
+            val parser = PrivAppPermissionParser()
+            for (permission in permissions) {
+                if (!permission.exists()) continue
+                val files = permission.listFiles() ?: continue
+                for (file in files) {
+                    if (!file.canRead()) continue
+                    if (file.extension != "xml") continue
+                    try {
+                        file.inputStream().use(parser::parse)
+                    } catch (e: Exception) {
+                        // ignore
+                    }
+                }
+            }
+            return parser.permissions.values.toList()
+        }
     }
 
     private val namespace: String? = null

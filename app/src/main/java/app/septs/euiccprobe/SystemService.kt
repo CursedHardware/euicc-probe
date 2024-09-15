@@ -22,6 +22,7 @@ object SystemService {
             "android.hardware.telephony.euicc",
             "android.hardware.telephony.euicc.mep",
             "android.hardware.se.omapi.uicc",
+            "android.hardware.usb.host",
         )
         return buildMap {
             for (feature in features) {
@@ -41,14 +42,8 @@ object SystemService {
     }
 
     fun hasService(context: Context, name: String): Boolean {
-        val pm = context.packageManager
-        val flags = 0
         return try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                pm.getApplicationInfo(name, PackageManager.ApplicationInfoFlags.of(flags.toLong()))
-            } else {
-                pm.getApplicationInfo(name, flags)
-            }
+            context.packageManager.getApplicationInfo(name, 0)
             true
         } catch (_: PackageManager.NameNotFoundException) {
             false

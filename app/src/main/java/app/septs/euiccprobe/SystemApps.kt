@@ -1,8 +1,6 @@
 package app.septs.euiccprobe
 
-import android.content.Context
 import android.content.pm.PackageManager
-import java.io.File
 
 object SystemApps {
     private val requiredPermissions = setOf(
@@ -12,25 +10,14 @@ object SystemApps {
     )
 
     private val optionalPermissions = setOf(
+        "android.permission.BIND_EUICC_SERVICE",
         "android.permission.SECURE_ELEMENT_PRIVILEGED_OPERATION",
         "com.android.permission.WRITE_EMBEDDED_SUBSCRIPTIONS",
     )
 
     fun getSystemLPAs(): List<PrivAppPermissionParser.Companion.PrivAppPermission> {
-        val directories = listOf("/", "/system", "/vendor", "/product")
-        val parser = PrivAppPermissionParser()
-        for (directory in directories) {
-            val permissions = File(directory, "etc/permissions/")
-            if (!permissions.exists()) continue
-            val files = permissions.listFiles() ?: continue
-            for (file in files) {
-                if (!file.canRead()) continue
-                if (!file.name.startsWith("privapp-permissions")) continue
-                if (file.extension != "xml") continue
-                file.inputStream().use(parser::parse)
-            }
-        }
-        return parser.filter { perm ->
+        val permissions = PrivAppPermissionParser.loadPermissions()
+        return permissions.filter { perm ->
             perm.allowedPermissions.containsAll(requiredPermissions) &&
                     perm.allowedPermissions.any(optionalPermissions::contains)
         }

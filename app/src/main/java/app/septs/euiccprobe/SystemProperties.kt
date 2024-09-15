@@ -25,4 +25,13 @@ object SystemProperties {
             put(name, properties[name])
         }
     }
+
+    fun boolean(name: String, matcher: (value: String) -> Boolean): Boolean {
+        return matcher(properties[name] ?: return false)
+    }
+
+    fun isEnabled(name: String) = boolean(name) {
+        val value = it.lowercase()
+        value == "1" || value == "y" || value == "true" || value == "yes" || value == "on"
+    }
 }

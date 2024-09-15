@@ -1,7 +1,6 @@
 package app.septs.euiccprobe
 
 import android.content.Context
-import android.content.pm.PackageManager
 import android.os.Build
 import android.telephony.TelephonyManager
 import android.util.Log
@@ -33,27 +32,31 @@ object OpenMobileAPI {
         Available,
     }
 
-
     enum class SEBypass {
         Unavailable,
         CannotBeBypassed,
         CanBeBypassed,
-        FullAccess,
+        TemporaryFullAccess,
+        PersistentFullAccess
     }
 
+    @Suppress("SpellCheckingInspection")
     @RequiresApi(Build.VERSION_CODES.P)
     fun getBypassState(context: Context): SEBypass {
-        val pkgName = "com.android.se"
-        if (!SystemService.hasService(context, pkgName)) {
+        if (!SystemService.hasService(context, "com.android.se")) {
             return SEBypass.Unavailable
         }
-        if (SystemProperties["ro.debuggable"].toInt() != 1) {
-            return SEBypass.CannotBeBypassed
+        val isDebuggable = SystemProperties.isEnabled("ro.debuggable")
+        val isFullAccess = SystemProperties.boolean("service.seek") {
+            it.contains("fullaccess")
         }
-        val isFullAccess = SystemProperties["service.seek"]
-            .ifEmpty { SystemProperties["persist.service.seek"] }
-            .contains("fullaccess")
-        return if (isFullAccess) SEBypass.FullAccess else SEBypass.CanBeBypassed
+        val isPersistFullAccess = SystemProperties.boolean("persist.service.seek") {
+            it.contains("fullaccess")
+        }
+        if (!isDebuggable) return SEBypass.CannotBeBypassed
+        if (isFullAccess) return SEBypass.TemporaryFullAccess
+        if (isPersistFullAccess) return SEBypass.PersistentFullAccess
+        return SEBypass.CanBeBypassed
     }
 
     suspend fun getSlots(context: Context): Result {

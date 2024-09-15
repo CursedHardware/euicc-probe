@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity() {
                     if (label != null) {
                         appendLine("- $label (${pkg.packageName})")
                     } else {
-                        appendLine("- ${pkg.packageName} [uninstalled]")
+                        appendLine("- ${pkg.packageName}")
                     }
                 }
             }
@@ -86,6 +86,8 @@ class MainActivity : AppCompatActivity() {
                 "esim.enable_esim_system_ui_by_default",
                 "ro.telephony.sim_slots.count",
                 "ro.setupwizard.esim_cid_ignore",
+                // Xiaomi Vendor
+                "ro.vendor.miui.support_esim"
             )
             SystemProperties.pick(*properties).let {
                 if (it.isEmpty()) return@let
