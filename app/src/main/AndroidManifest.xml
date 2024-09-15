@@ -42,6 +42,12 @@
         <package android:name="com.miui.euicc" />
         <!-- Samsung LPA -->
         <package android:name="com.samsung.euicc" />
+        <!-- OpenEUICC -->
+        <package android:name="im.angry.openeuicc" />
+        <!-- EasyEUICC -->
+        <package android:name="im.angry.easyeuicc" />
+        <!-- Infineon LPA -->
+        <package android:name="com.infineon.esim.lpa" />
         <!-- https://github.com/QueallyTech/OMAPI-Bypass -->
         <package android:name="com.queallytech.omapi" />
     </queries>
