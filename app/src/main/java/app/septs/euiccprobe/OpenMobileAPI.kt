@@ -97,11 +97,11 @@ object OpenMobileAPI {
                 try {
                     val session = reader.openSession()
                     val channel = session.openLogicalChannel(ISD_R_APPLET_ID) ?: continue
-                    put(reader.name, channel.isOpen)
+                    put(normalizeName(reader.name), channel.isOpen)
                     if (channel.isOpen) channel.close()
                     if (!session.isClosed) session.closeChannels()
                 } catch (_: SecurityException) {
-                    put(reader.name, true)
+                    put(normalizeName(reader.name), true)
                 } catch (e: Throwable) {
                     Log.e(javaClass.name, "${reader.name} = ${e.message}")
                 }
@@ -123,17 +123,17 @@ object OpenMobileAPI {
         if (!service.isConnected) {
             return Result(Backend.SIMAlliance, State.UnableToConnect, emptyMap())
         }
-        val slots = buildMap<String, Boolean> {
+        val slots = buildMap {
             for (reader in service.readers) {
                 if (!reader.name.startsWith("SIM")) continue
                 try {
                     val session = reader.openSession()
                     val channel = session.openLogicalChannel(ISD_R_APPLET_ID)
-                    put(reader.name, !channel.isClosed)
+                    put(normalizeName(reader.name), !channel.isClosed)
                     if (!channel.isClosed) channel.close()
                     if (!session.isClosed) session.closeChannels()
                 } catch (_: SecurityException) {
-                    put(reader.name, true)
+                    put(normalizeName(reader.name), true)
                 } catch (e: Throwable) {
                     Log.e(javaClass.name, "${reader.name} = ${e.message}")
                 }
@@ -149,7 +149,7 @@ object OpenMobileAPI {
         val count = when {
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.R -> service.activeModemCount
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> @Suppress("DEPRECATION") service.phoneCount
-            else -> return mapOf(Pair("SIM", false))
+            else -> return mapOf(Pair("SIM1", false))
         }
         return buildMap {
             for (index in 1..count) {
@@ -157,4 +157,6 @@ object OpenMobileAPI {
             }
         }
     }
+
+    private fun normalizeName(name: String) = if (name == "SIM") "SIM1" else name
 }
