@@ -46,6 +46,8 @@
         <package android:name="im.angry.openeuicc" />
         <!-- EasyEUICC -->
         <package android:name="im.angry.easyeuicc" />
+        <!-- JMP SIM Manager -->
+        <package android:name="chat.jmp.simmanager" />
         <!-- Infineon LPA -->
         <package android:name="com.infineon.esim.lpa" />
         <!-- https://github.com/QueallyTech/OMAPI-Bypass -->
