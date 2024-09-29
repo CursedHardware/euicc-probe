@@ -38,8 +38,12 @@
         <package android:name="org.simalliance.openmobileapi.service" />
         <!-- Google SIM Manager -->
         <package android:name="com.google.android.euicc" />
+        <!-- Google Wear LPA -->
+        <package android:name="com.google.android.euicc.wear" />
         <!-- MIUI LPA -->
         <package android:name="com.miui.euicc" />
+        <!-- Xiaomi Wear LPA -->
+        <package android:name="com.xiaomi.wear.lpa" />
         <!-- Samsung LPA -->
         <package android:name="com.samsung.euicc" />
         <!-- OpenEUICC -->
@@ -50,5 +54,8 @@
         <package android:name="com.infineon.esim.lpa" />
         <!-- https://github.com/QueallyTech/OMAPI-Bypass -->
         <package android:name="com.queallytech.omapi" />
+        <!-- https://github.com/iebb/NekokoLPA -->
+        <package android:name="ee.nekoko.nlpa"/>
+        <package android:name="ee.nekoko.nlpa.multisign"/>
     </queries>
 </manifest>
