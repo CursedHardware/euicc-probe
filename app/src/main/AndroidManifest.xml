@@ -42,20 +42,26 @@
         <package android:name="com.google.android.euicc.wear" />
         <!-- MIUI LPA -->
         <package android:name="com.miui.euicc" />
+        <!-- Vivo LPA -->
+        <package android:name="com.android.vivolpa" />
         <!-- Xiaomi Wear LPA -->
         <package android:name="com.xiaomi.wear.lpa" />
         <!-- Samsung LPA -->
         <package android:name="com.samsung.euicc" />
+        <!-- Thales LPA -->
+        <package android:name="com.gemalto.odc.lpa.consumer.app" />
         <!-- OpenEUICC -->
         <package android:name="im.angry.openeuicc" />
         <!-- EasyEUICC -->
         <package android:name="im.angry.easyeuicc" />
+        <!-- JMP SIM Manager -->
+        <package android:name="chat.jmp.simmanager" />
         <!-- Infineon LPA -->
         <package android:name="com.infineon.esim.lpa" />
         <!-- https://github.com/QueallyTech/OMAPI-Bypass -->
         <package android:name="com.queallytech.omapi" />
         <!-- https://github.com/iebb/NekokoLPA -->
-        <package android:name="ee.nekoko.nlpa"/>
-        <package android:name="ee.nekoko.nlpa.multisign"/>
+        <package android:name="ee.nekoko.nlpa" />
+        <package android:name="ee.nekoko.nlpa.multisign" />
     </queries>
 </manifest>
