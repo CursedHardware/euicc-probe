@@ -108,8 +108,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 if (result.state == OpenMobileAPI.State.Available) {
                     for (slot in result.slots) {
-                        val state = if (slot.value) "Available" else "Unavailable"
-                        appendLine("- ${slot.key} Slot: $state")
+                        appendLine("- ${slot.key} Slot: ${slot.value}")
                     }
                 }
             }

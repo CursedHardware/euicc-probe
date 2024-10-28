@@ -17,7 +17,7 @@ object OpenMobileAPI {
     data class Result(
         val backend: Backend,
         val state: State,
-        val slots: Map<String, Boolean>
+        val slots: Map<String, SlotState>
     )
 
     enum class Backend {
@@ -30,6 +30,13 @@ object OpenMobileAPI {
         UnableToConnect,
         Unavailable,
         Available,
+    }
+
+    enum class SlotState {
+        NotConnectable,
+        Connectable,
+        Available,
+        Unavailable,
     }
 
     enum class SEBypass {
@@ -92,19 +99,22 @@ object OpenMobileAPI {
             return Result(Backend.Builtin, State.UnableToConnect, emptyMap())
         }
         val slots = buildMap {
+            var state: SlotState
             for (reader in service.readers) {
                 if (!reader.name.startsWith("SIM")) continue
+                state = SlotState.Connectable
                 try {
                     val session = reader.openSession()
                     val channel = session.openLogicalChannel(ISD_R_APPLET_ID) ?: continue
-                    put(normalizeName(reader.name), channel.isOpen)
+                    state = if (channel.isOpen) SlotState.Available else SlotState.Unavailable
                     if (channel.isOpen) channel.close()
                     if (!session.isClosed) session.closeChannels()
                 } catch (_: SecurityException) {
-                    put(normalizeName(reader.name), true)
+                    state = SlotState.Available
                 } catch (e: Throwable) {
                     Log.e(javaClass.name, "${reader.name} = ${e.message}")
                 }
+                put(normalizeName(reader.name), state)
             }
             service.shutdown()
         }
@@ -124,19 +134,22 @@ object OpenMobileAPI {
             return Result(Backend.SIMAlliance, State.UnableToConnect, emptyMap())
         }
         val slots = buildMap {
+            var state: SlotState
             for (reader in service.readers) {
                 if (!reader.name.startsWith("SIM")) continue
+                state = SlotState.Connectable
                 try {
                     val session = reader.openSession()
                     val channel = session.openLogicalChannel(ISD_R_APPLET_ID)
-                    put(normalizeName(reader.name), !channel.isClosed)
+                    state = if (channel.isClosed) SlotState.Unavailable else SlotState.Available
                     if (!channel.isClosed) channel.close()
                     if (!session.isClosed) session.closeChannels()
                 } catch (_: SecurityException) {
-                    put(normalizeName(reader.name), true)
+                    state = SlotState.Available
                 } catch (e: Throwable) {
                     Log.e(javaClass.name, "${reader.name} = ${e.message}")
                 }
+                put(normalizeName(reader.name), state)
             }
             service.shutdown()
         }
@@ -144,16 +157,16 @@ object OpenMobileAPI {
         return Result(Backend.SIMAlliance, state, slots)
     }
 
-    private fun getCardSlots(context: Context): Map<String, Boolean> {
+    private fun getCardSlots(context: Context): Map<String, SlotState> {
         val service = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         val count = when {
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.R -> service.activeModemCount
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> @Suppress("DEPRECATION") service.phoneCount
-            else -> return mapOf(Pair("SIM1", false))
+            else -> return mapOf(Pair("SIM1", SlotState.NotConnectable))
         }
         return buildMap {
             for (index in 1..count) {
-                put("SIM$index", false)
+                put("SIM$index", SlotState.NotConnectable)
             }
         }
     }
