@@ -86,6 +86,12 @@ class MainActivity : AppCompatActivity() {
                 "esim.enable_esim_system_ui_by_default",
                 "ro.telephony.sim_slots.count",
                 "ro.setupwizard.esim_cid_ignore",
+                // RIL
+                "gsm.version.ril-impl",
+                // Multi SIM
+                "ro.multisim.simslotcount",
+                "ro.vendor.multisim.simslotcount",
+                "persist.radio.multisim.config",
                 // Xiaomi Vendor
                 "ro.vendor.miui.support_esim"
             )
