@@ -50,6 +50,7 @@
     </LinearLayout>
 
     <com.google.android.material.tabs.TabLayout
+        android:id="@+id/main_tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/basic_margin_half">
@@ -66,6 +67,7 @@
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/main_tab_viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>
