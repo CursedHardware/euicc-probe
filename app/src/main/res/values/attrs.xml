@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BasicInfoView">
+        <attr name="label" format="string" />
+        <attr name="value" format="string" />
+        <attr name="alignment">
+            <enum name="start" value="0" />
+            <enum name="end" value="1" />
+        </attr>
+    </declare-styleable>
+</resources>
