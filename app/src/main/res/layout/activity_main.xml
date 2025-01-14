@@ -65,19 +65,7 @@
             android:text="@string/system" />
     </com.google.android.material.tabs.TabLayout>
 
-    <HorizontalScrollView
-        android:id="@+id/scroll_view"
+    <androidx.viewpager2.widget.ViewPager2
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:id="@+id/report"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="monospace"
-            android:padding="8dp"
-            android:scrollHorizontally="true"
-            android:textIsSelectable="true"
-            tools:ignore="SpeakableTextPresentCheck" />
-    </HorizontalScrollView>
+        android:layout_height="match_parent" />
 </LinearLayout>

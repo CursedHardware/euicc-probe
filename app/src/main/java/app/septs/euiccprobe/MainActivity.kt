@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
+import app.septs.euiccprobe.databinding.ActivityMainBinding
+import app.septs.euiccprobe.ui.widget.OpenMobileFragment
 import io.noties.markwon.Markwon
 import io.noties.markwon.ext.tasklist.TaskListPlugin
 import kotlinx.coroutines.Dispatchers
@@ -19,26 +21,24 @@ import kotlinx.coroutines.withContext
 
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var markwon: Markwon
-    private lateinit var scrollView: HorizontalScrollView
-    private lateinit var report: TextView
+    private lateinit var viewBinding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+        loadView()
+    }
+
+    private fun loadView() {
+        viewBinding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(viewBinding.root)
+
+        ViewCompat.setOnApplyWindowInsetsListener(viewBinding.main) { v, insets ->
             val systemBars =
                 insets.getInsets(WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-        scrollView = findViewById(R.id.scroll_view)
-        report = findViewById(R.id.report)
-        markwon = Markwon.builder(this)
-            .usePlugin(TaskListPlugin.create(this))
-            .build()
     }
 
     override fun onStart() {
@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
             try {
                 init()
             } catch (e: Throwable) {
-                report.text = e.stackTraceToString()
+
             }
         }
     }
@@ -128,7 +128,5 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        markwon.setMarkdown(report, markdown)
-        scrollView.post { scrollView.fullScroll(View.FOCUS_DOWN) }
     }
 }
