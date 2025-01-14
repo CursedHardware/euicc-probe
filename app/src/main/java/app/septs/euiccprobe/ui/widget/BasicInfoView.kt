@@ -3,16 +3,23 @@ package app.septs.euiccprobe.ui.widget
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.widget.LinearLayout
+import androidx.appcompat.widget.LinearLayoutCompat
 import app.septs.euiccprobe.R
 import app.septs.euiccprobe.databinding.BasicInfoViewBinding
 
-class BasicInfoView : LinearLayout {
-    private var labelText: String? = null
-    private var valueText: String? = null
-    private var alignmentValue: Int? = null
 
+class BasicInfoView : LinearLayoutCompat {
     private lateinit var viewBinding: BasicInfoViewBinding
+    var labelText: String
+        get() = viewBinding.labelTextview.text.toString()
+        set(value) {
+            viewBinding.labelTextview.text = value
+        }
+    var valueText: String
+        get() = viewBinding.valueTextview.text.toString()
+        set(value) {
+            viewBinding.valueTextview.text = value
+        }
 
     constructor(context: Context) : this(context, null)
 
@@ -23,19 +30,16 @@ class BasicInfoView : LinearLayout {
         attributeSet,
         style
     ) {
-        obtainAttributes(attributeSet)
-        loadView()
+        loadView(attributeSet)
     }
 
-    private fun obtainAttributes(attributeSet: AttributeSet?) {
+    private fun loadView(attributeSet: AttributeSet?) {
         val ta = context.obtainStyledAttributes(attributeSet, R.styleable.BasicInfoView)
-        labelText = ta.getString(R.styleable.BasicInfoView_label)
-        valueText = ta.getString(R.styleable.BasicInfoView_value)
-        alignmentValue = ta.getInt(R.styleable.BasicInfoView_alignment, 0)
+        val labelTextAttr = ta.getString(R.styleable.BasicInfoView_label)
+        val valueTextAttr = ta.getString(R.styleable.BasicInfoView_value)
         ta.recycle()
-    }
-
-    private fun loadView() {
         viewBinding = BasicInfoViewBinding.inflate(LayoutInflater.from(context), this)
+        labelText = labelTextAttr ?: ""
+        valueText = valueTextAttr ?: ""
     }
 }

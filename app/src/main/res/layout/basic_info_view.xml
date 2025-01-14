@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     tools:gravity="start"
-    tools:parentTag="android.widget.LinearLayout">
+    tools:parentTag="androidx.appcompat.widget.LinearLayoutCompat">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/label_textview"
