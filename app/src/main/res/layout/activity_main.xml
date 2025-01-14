@@ -20,6 +20,29 @@
             app:titleCentered="true" />
     </com.google.android.material.appbar.AppBarLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <app.septs.euiccprobe.ui.widget.BasicInfoView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:label="@string/basic_info_device" />
+
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="@color/md_theme_secondary" />
+
+        <app.septs.euiccprobe.ui.widget.BasicInfoView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="end"
+            app:label="@string/basic_info_android_version" />
+    </LinearLayout>
+
     <HorizontalScrollView
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"

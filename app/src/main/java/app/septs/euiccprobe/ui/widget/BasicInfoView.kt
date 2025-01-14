@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import androidx.appcompat.widget.LinearLayoutCompat
 import app.septs.euiccprobe.R
 import app.septs.euiccprobe.databinding.BasicInfoViewBinding
-
+import app.septs.euiccprobe.ui.widget.tool.CustomTextUtil.orDefault
 
 class BasicInfoView : LinearLayoutCompat {
     private lateinit var viewBinding: BasicInfoViewBinding
@@ -39,7 +39,13 @@ class BasicInfoView : LinearLayoutCompat {
         val valueTextAttr = ta.getString(R.styleable.BasicInfoView_value)
         ta.recycle()
         viewBinding = BasicInfoViewBinding.inflate(LayoutInflater.from(context), this)
-        labelText = labelTextAttr ?: ""
-        valueText = valueTextAttr ?: ""
+        orientation = VERTICAL
+        val paddingVertical =
+            context.resources.getDimensionPixelSize(R.dimen.label_value_paddingVertical)
+        val paddingHorizontal =
+            context.resources.getDimensionPixelSize(R.dimen.label_value_paddingHorizontal)
+        setPadding(paddingHorizontal, paddingVertical, paddingHorizontal, paddingVertical)
+        labelText = labelTextAttr.orDefault(context.getString(R.string.default_text_placeholder))
+        valueText = valueTextAttr.orDefault(context.getString(R.string.default_text_placeholder))
     }
 }
