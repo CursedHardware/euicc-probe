@@ -19,9 +19,20 @@
             app:title="@string/app_name"
             app:titleCentered="true" />
     </com.google.android.material.appbar.AppBarLayout>
-    <androidx.core.widget.NestedScrollView
+
+    <HorizontalScrollView
+        android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </androidx.core.widget.NestedScrollView>
+        <TextView
+            android:id="@+id/report"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:padding="8dp"
+            android:scrollHorizontally="true"
+            android:textIsSelectable="true"
+            tools:ignore="SpeakableTextPresentCheck" />
+    </HorizontalScrollView>
 </LinearLayout>
