@@ -24,9 +24,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/basic_margin">
+        android:layout_marginTop="@dimen/basic_margin"
+        android:gravity="center">
 
         <app.septs.euiccprobe.ui.widget.BasicInfoView
+            android:id="@+id/device_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -35,15 +37,33 @@
         <View
             android:layout_width="0.5dp"
             android:layout_height="match_parent"
-            android:background="@color/md_theme_secondary" />
+            android:background="@color/md_theme_secondary"
+            android:layout_marginVertical="@dimen/basic_margin_half" />
 
         <app.septs.euiccprobe.ui.widget.BasicInfoView
+            android:id="@+id/android_version"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="end"
             app:label="@string/basic_info_android_version" />
     </LinearLayout>
+
+    <com.google.android.material.tabs.TabLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/basic_margin_half">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/open_mobile" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/system" />
+    </com.google.android.material.tabs.TabLayout>
 
     <HorizontalScrollView
         android:id="@+id/scroll_view"

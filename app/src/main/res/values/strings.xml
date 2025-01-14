@@ -3,4 +3,7 @@
     <string name="default_text_placeholder">--</string>
     <string name="basic_info_device">Device</string>
     <string name="basic_info_android_version">Android Version</string>
+
+    <string name="open_mobile">Open Mobile</string>
+    <string name="system">System</string>
 </resources>
