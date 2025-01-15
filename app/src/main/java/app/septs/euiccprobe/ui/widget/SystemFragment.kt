@@ -14,6 +14,7 @@ import app.septs.euiccprobe.SystemApps
 import app.septs.euiccprobe.SystemProperties
 import app.septs.euiccprobe.SystemService
 import app.septs.euiccprobe.databinding.FragmentSystemBinding
+import app.septs.euiccprobe.ui.widget.adapter.SystemFeaturesAdapter
 import app.septs.euiccprobe.ui.widget.adapter.SystemPropertiesAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Dispatchers
@@ -27,6 +28,8 @@ import kotlinx.coroutines.withContext
  */
 class SystemFragment : Fragment() {
     private var viewBinding: FragmentSystemBinding? = null
+    private var systemFeaturesAdapter: SystemFeaturesAdapter? = null
+    private val systemFeatures: MutableMap<String, Boolean> = mutableMapOf()
     private var systemPropertiesAdapter: SystemPropertiesAdapter? = null
     private val systemProperties: MutableMap<String, String> = mutableMapOf()
     private val systemLPAs: MutableMap<String, String> = mutableMapOf()
@@ -37,6 +40,11 @@ class SystemFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         viewBinding = FragmentSystemBinding.inflate(inflater, container, false)
+
+        systemFeaturesAdapter = SystemFeaturesAdapter(systemFeatures)
+        viewBinding?.systemFeaturesRv?.layoutManager = LinearLayoutManager(context)
+        viewBinding?.systemFeaturesRv?.adapter = systemFeaturesAdapter
+
         systemPropertiesAdapter = SystemPropertiesAdapter(systemProperties)
         viewBinding?.systemPropertiesRv?.layoutManager = LinearLayoutManager(context)
         viewBinding?.systemPropertiesRv?.adapter = systemPropertiesAdapter
@@ -64,31 +72,41 @@ class SystemFragment : Fragment() {
         viewBinding?.euiccSystemServiceStatusTextView?.text = getString(R.string.unknown)
         context?.let {
             viewBinding?.euiccSystemServiceStatusTextView?.setTextColor(
-                ContextCompat.getColor(it, com.google.android.material.R.color.material_on_surface_disabled)
+                ContextCompat.getColor(
+                    it,
+                    com.google.android.material.R.color.material_on_surface_disabled
+                )
             )
         }
         viewBinding?.systemLpasLiv?.restoreToUnknownEmpty()
+        systemFeatures.clear()
+        systemFeaturesAdapter?.notifyDataSetChanged()
         systemProperties.clear()
         systemPropertiesAdapter?.notifyDataSetChanged()
 
 
         lifecycleScope.launch {
             loadData()
-            viewBinding?.euiccSystemServiceStatusTextView?.text = eUICCSystemServiceState.toString()
-            if (eUICCSystemServiceState == SystemService.EuiccState.Enabled) {
-                context?.let {
-                    viewBinding?.euiccSystemServiceStatusTextView?.setTextColor(
-                        ContextCompat.getColor(it, R.color.md_theme_primary)
-                    )
-                }
-            }
-            val key = systemLPAs.keys.first()
-            viewBinding?.systemLpasLiv?.headlineText = key
-            viewBinding?.systemLpasLiv?.supportingText = systemLPAs[key]
-            viewBinding?.systemLpasLiv?.leadingIconDrawable =
-                systemLPAs[key]?.let { context?.packageManager?.getApplicationIcon(it) }
-            systemPropertiesAdapter?.notifyDataSetChanged()
+            updateView()
         }
+    }
+
+    private fun updateView() {
+        viewBinding?.euiccSystemServiceStatusTextView?.text = eUICCSystemServiceState.toString()
+        if (eUICCSystemServiceState == SystemService.EuiccState.Enabled) {
+            context?.let {
+                viewBinding?.euiccSystemServiceStatusTextView?.setTextColor(
+                    ContextCompat.getColor(it, R.color.md_theme_primary)
+                )
+            }
+        }
+        val key = systemLPAs.keys.first()
+        viewBinding?.systemLpasLiv?.headlineText = key
+        viewBinding?.systemLpasLiv?.supportingText = systemLPAs[key]
+        viewBinding?.systemLpasLiv?.leadingIconDrawable =
+            systemLPAs[key]?.let { context?.packageManager?.getApplicationIcon(it) }
+        systemFeaturesAdapter?.notifyDataSetChanged()
+        systemPropertiesAdapter?.notifyDataSetChanged()
     }
 
     private suspend fun loadData() = withContext(Dispatchers.IO) {
@@ -119,6 +137,16 @@ class SystemFragment : Fragment() {
             }
         }
 
+        //System Features
+        context?.let {
+            SystemService.getSystemFeatures(it.applicationContext).let {
+                systemFeatures.clear()
+                for (feature in it.entries) {
+                    systemFeatures[feature.key] = feature.value
+                }
+            }
+        }
+
         //System Properties
         val systemProperties: MutableMap<String, String> = mutableMapOf()
         SystemProperties.pick(
@@ -143,18 +171,5 @@ class SystemFragment : Fragment() {
         }
         this@SystemFragment.systemProperties.clear()
         this@SystemFragment.systemProperties.putAll(systemProperties)
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @return A new instance of fragment SystemFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            SystemFragment()
     }
 }

@@ -107,17 +107,4 @@ class OpenMobileFragment : Fragment() {
         super.onDestroy()
         viewBinding = null;
     }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @return A new instance of fragment OpenMobileFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            OpenMobileFragment()
-    }
 }

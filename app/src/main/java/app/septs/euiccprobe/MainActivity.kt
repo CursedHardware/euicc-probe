@@ -106,22 +106,4 @@ class MainActivity : AppCompatActivity() {
             viewBinding.androidVersion.valueText = data["version"]
         }
     }
-
-    private suspend fun init() = withContext(Dispatchers.Main) {
-        val markdown = buildString {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                val state = SystemService.getEuiccServiceState(applicationContext)
-                appendLine()
-                appendLine("eUICC System Service: $state")
-            }
-            SystemService.getSystemFeatures(applicationContext).let {
-                appendLine()
-                appendLine("System Features:")
-                for (feature in it.entries) {
-                    appendLine("- [${if (feature.value) "x" else " "}] ${feature.key}")
-                }
-            }
-
-        }
-    }
 }
