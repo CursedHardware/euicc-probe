@@ -8,8 +8,19 @@ import app.septs.euiccprobe.R
 import app.septs.euiccprobe.databinding.BasicInfoViewBinding
 import app.septs.euiccprobe.ui.widget.tool.CustomTextUtil.orDefault
 
-class BasicInfoView : LinearLayoutCompat {
-    private lateinit var viewBinding: BasicInfoViewBinding
+class BasicInfoView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) :
+    LinearLayoutCompat(
+        context,
+        attrs,
+        defStyleAttr
+    ) {
+    private val viewBinding =
+        BasicInfoViewBinding.inflate(LayoutInflater.from(context), this)
+
     private var labelText: String?
         get() = viewBinding.labelTextview.text.toString()
         set(value) {
@@ -21,31 +32,27 @@ class BasicInfoView : LinearLayoutCompat {
             viewBinding.valueTextview.text = value
         }
 
-    constructor(context: Context) : this(context, null)
-
-    constructor(context: Context, attributeSet: AttributeSet?) : this(context, attributeSet, 0)
-
-    constructor(context: Context, attributeSet: AttributeSet?, style: Int) : super(
-        context,
-        attributeSet,
-        style
-    ) {
-        loadView(attributeSet)
-    }
-
-    private fun loadView(attributeSet: AttributeSet?) {
-        val ta = context.obtainStyledAttributes(attributeSet, R.styleable.BasicInfoView)
-        val labelTextAttr = ta.getString(R.styleable.BasicInfoView_label)
-        val valueTextAttr = ta.getString(R.styleable.BasicInfoView_value)
-        ta.recycle()
-        viewBinding = BasicInfoViewBinding.inflate(LayoutInflater.from(context), this)
-        orientation = VERTICAL
-        val paddingVertical =
-            context.resources.getDimensionPixelSize(R.dimen.basic_margin_half)
-        val paddingHorizontal =
-            context.resources.getDimensionPixelSize(R.dimen.basic_margin)
-        setPadding(paddingHorizontal, paddingVertical, paddingHorizontal, paddingVertical)
-        labelText = labelTextAttr.orDefault(context.getString(R.string.default_text_placeholder))
-        valueText = valueTextAttr.orDefault(context.getString(R.string.default_text_placeholder))
+    init {
+        context.theme.obtainStyledAttributes(
+            attrs,
+            R.styleable.BasicInfoView,
+            0,
+            0
+        ).apply {
+            try {
+                orientation = VERTICAL
+                val paddingVertical =
+                    context.resources.getDimensionPixelSize(R.dimen.basic_margin_half)
+                val paddingHorizontal =
+                    context.resources.getDimensionPixelSize(R.dimen.basic_margin)
+                setPadding(paddingHorizontal, paddingVertical, paddingHorizontal, paddingVertical)
+                labelText =
+                    getString(R.styleable.BasicInfoView_label).orDefault(context.getString(R.string.default_text_placeholder))
+                valueText =
+                    getString(R.styleable.BasicInfoView_value).orDefault(context.getString(R.string.default_text_placeholder))
+            } finally {
+                recycle()
+            }
+        }
     }
 }

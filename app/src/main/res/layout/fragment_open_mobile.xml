@@ -24,21 +24,25 @@
             android:textColor="@color/md_theme_primary" />
 
         <app.septs.euiccprobe.ui.widget.ListItemView
+            android:id="@+id/open_mobile_backend_liv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:headlineText="@string/open_mobile_backend" />
 
         <app.septs.euiccprobe.ui.widget.ListItemView
+            android:id="@+id/open_mobile_state_liv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:headlineText="@string/open_mobile_state" />
 
         <app.septs.euiccprobe.ui.widget.ListItemView
+            android:id="@+id/open_mobile_bypass_liv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:headlineText="@string/open_mobile_bypass" />
 
         <app.septs.euiccprobe.ui.widget.ListItemView
+            android:id="@+id/open_mobile_simslots_liv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:headlineText="@string/open_mobile_sim_slots" />
