@@ -43,6 +43,10 @@ class OpenMobileFragment : Fragment() {
     }
 
     private fun updateData() {
+        viewBinding?.openMobileBackendLiv?.restoreToEmpty()
+        viewBinding?.openMobileStateLiv?.restoreToEmpty()
+        viewBinding?.openMobileBypassLiv?.restoreToEmpty()
+        viewBinding?.openMobileSimslotsLiv?.restoreToEmpty()
         lifecycleScope.launch {
             val data = loadData()
             viewBinding?.openMobileBackendLiv?.supportingText = data["backend"].toString()

@@ -1,6 +1,7 @@
 package app.septs.euiccprobe.ui.widget
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
@@ -24,6 +25,18 @@ class ListItemView @JvmOverloads constructor(
         set(value) {
             if (value != null) {
                 binding.leadingIcon.setImageResource(value)
+                binding.leadingIcon.tag = value
+                binding.leadingIcon.isVisible = true
+            } else {
+                binding.leadingIcon.isVisible = false
+            }
+        }
+
+    var leadingIconDrawable: Drawable?
+        get() = binding.leadingIcon.drawable
+        set(value) {
+            if (value != null) {
+                binding.leadingIcon.setImageDrawable(value)
                 binding.leadingIcon.tag = value
                 binding.leadingIcon.isVisible = true
             } else {
@@ -64,5 +77,15 @@ class ListItemView @JvmOverloads constructor(
                 recycle()
             }
         }
+    }
+
+    fun restoreToEmpty() {
+        supportingText = "--"
+    }
+
+    fun restoreToUnknownEmpty() {
+        leadingIconDrawable = null
+        headlineText = context.getString(R.string.unknown)
+        supportingText = "--"
     }
 }

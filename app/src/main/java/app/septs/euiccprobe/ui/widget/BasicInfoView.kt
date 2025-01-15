@@ -55,4 +55,8 @@ class BasicInfoView @JvmOverloads constructor(
             }
         }
     }
+
+    fun restore() {
+        valueText = "--"
+    }
 }

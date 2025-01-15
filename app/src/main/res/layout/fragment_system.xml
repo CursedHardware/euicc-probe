@@ -29,7 +29,7 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     style="?textAppearanceLabelLarge"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/euicc_system_service" />
@@ -56,6 +56,12 @@
             android:text="@string/system_features"
             android:textColor="@color/md_theme_primary" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/system_features_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"/>
+
         <com.google.android.material.textview.MaterialTextView
             style="?textAppearanceLabelSmall"
             android:layout_width="wrap_content"
@@ -68,6 +74,7 @@
             android:textColor="@color/md_theme_primary" />
 
         <app.septs.euiccprobe.ui.widget.ListItemView
+            android:id="@+id/system_lpas_liv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:headlineText="@string/unknown" />
@@ -82,6 +89,14 @@
             android:layout_marginBottom="@dimen/basic_margin_half"
             android:text="@string/system_properties"
             android:textColor="@color/md_theme_primary" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/system_properties_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            tools:listitem="@layout/list_item_view"
+            tools:itemCount="4"/>
 
     </LinearLayout>
 

@@ -98,6 +98,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateData() {
+        viewBinding.deviceName.restore()
+        viewBinding.androidVersion.restore()
         lifecycleScope.launch {
             val data = loadData()
             viewBinding.deviceName.valueText = data["device"]
