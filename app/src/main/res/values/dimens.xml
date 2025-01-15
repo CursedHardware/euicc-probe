@@ -4,6 +4,5 @@
     <dimen name="basic_margin_half">8dp</dimen>
 
     <dimen name="label_value_bottom_margin">4dp</dimen>
-    <dimen name="label_value_paddingHorizontal">24dp</dimen>
-    <dimen name="label_value_paddingVertical">8dp</dimen>
+    <dimen name="building_blocks_nav_item_padding_vertical">18dp</dimen>
 </resources>

@@ -1,16 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.widget.OpenMobileFragment">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/open_mobile_label_textview"
+            style="?textAppearanceLabelSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/basic_margin"
+            android:layout_marginTop="@dimen/basic_margin"
+            android:layout_marginEnd="@dimen/basic_margin"
+            android:layout_marginBottom="@dimen/basic_margin_half"
+            android:text="@string/open_mobile_api"
+            android:textColor="@color/md_theme_primary" />
 
+        <app.septs.euiccprobe.ui.widget.ListItemView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:headlineText="@string/open_mobile_backend" />
 
+        <app.septs.euiccprobe.ui.widget.ListItemView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:headlineText="@string/open_mobile_state" />
+
+        <app.septs.euiccprobe.ui.widget.ListItemView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:headlineText="@string/open_mobile_bypass" />
+
+        <app.septs.euiccprobe.ui.widget.ListItemView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:headlineText="@string/open_mobile_sim_slots" />
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

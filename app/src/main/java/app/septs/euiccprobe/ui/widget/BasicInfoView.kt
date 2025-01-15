@@ -10,12 +10,12 @@ import app.septs.euiccprobe.ui.widget.tool.CustomTextUtil.orDefault
 
 class BasicInfoView : LinearLayoutCompat {
     private lateinit var viewBinding: BasicInfoViewBinding
-    var labelText: String
+    private var labelText: String?
         get() = viewBinding.labelTextview.text.toString()
         set(value) {
             viewBinding.labelTextview.text = value
         }
-    var valueText: String
+    var valueText: String?
         get() = viewBinding.valueTextview.text.toString()
         set(value) {
             viewBinding.valueTextview.text = value
@@ -41,9 +41,9 @@ class BasicInfoView : LinearLayoutCompat {
         viewBinding = BasicInfoViewBinding.inflate(LayoutInflater.from(context), this)
         orientation = VERTICAL
         val paddingVertical =
-            context.resources.getDimensionPixelSize(R.dimen.label_value_paddingVertical)
+            context.resources.getDimensionPixelSize(R.dimen.basic_margin_half)
         val paddingHorizontal =
-            context.resources.getDimensionPixelSize(R.dimen.label_value_paddingHorizontal)
+            context.resources.getDimensionPixelSize(R.dimen.basic_margin)
         setPadding(paddingHorizontal, paddingVertical, paddingHorizontal, paddingVertical)
         labelText = labelTextAttr.orDefault(context.getString(R.string.default_text_placeholder))
         valueText = valueTextAttr.orDefault(context.getString(R.string.default_text_placeholder))

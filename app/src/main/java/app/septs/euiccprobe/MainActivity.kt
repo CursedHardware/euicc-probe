@@ -2,9 +2,6 @@ package app.septs.euiccprobe
 
 import android.os.Build
 import android.os.Bundle
-import android.view.View
-import android.widget.HorizontalScrollView
-import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -16,8 +13,6 @@ import app.septs.euiccprobe.databinding.ActivityMainBinding
 import app.septs.euiccprobe.ui.widget.OpenMobileFragment
 import app.septs.euiccprobe.ui.widget.SystemFragment
 import com.google.android.material.tabs.TabLayoutMediator
-import io.noties.markwon.Markwon
-import io.noties.markwon.ext.tasklist.TaskListPlugin
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -36,6 +31,7 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         loadView()
+        updateData()
     }
 
     private fun loadView() {
@@ -48,7 +44,10 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        bindViewPagerToTabBar()
+    }
 
+    private fun bindViewPagerToTabBar() {
         viewBinding.mainTabViewPager.adapter = object : FragmentStateAdapter(this) {
             override fun getItemCount(): Int = tabFragments.size
 
@@ -56,7 +55,10 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        TabLayoutMediator(viewBinding.mainTabLayout, viewBinding.mainTabViewPager) { tab, position ->
+        TabLayoutMediator(
+            viewBinding.mainTabLayout,
+            viewBinding.mainTabViewPager
+        ) { tab, position ->
             // 使用 TabItem 中的标题
             tab.text = when (position) {
                 0 -> resources.getString(R.string.open_mobile)
@@ -70,25 +72,38 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         lifecycleScope.launch {
             try {
-                init()
+                updateData()
             } catch (e: Throwable) {
 
             }
         }
     }
 
+    private suspend fun loadData() = withContext(Dispatchers.IO) {
+        val deviceInfoSet: MutableMap<String, String?> = mutableMapOf()
+        deviceInfoSet["device"] = Version.getModelName()
+        val firmwareVersion = Version.getFirmwareVersion() ?: ""
+        val displayFirmwareVersion = if (firmwareVersion.isEmpty()) {
+            ""
+        } else {
+            " $firmwareVersion"
+        }
+        deviceInfoSet["version"] =
+            runBlocking { "${Build.VERSION.RELEASE ?: resources.getString(R.string.unknown)}${displayFirmwareVersion}" }
+        deviceInfoSet
+    }
+
+    private fun updateData() {
+        lifecycleScope.launch {
+            val data = loadData()
+            viewBinding.deviceName.valueText = data["device"]
+            viewBinding.androidVersion.valueText = data["version"]
+        }
+    }
+
     @Suppress("SpellCheckingInspection")
     private suspend fun init() = withContext(Dispatchers.Main) {
         val markdown = buildString {
-            appendLine(Version.getModelName())
-            appendLine()
-            appendLine(runBlocking {
-                val parts = mutableListOf(
-                    "Android ${Build.VERSION.RELEASE}",
-                )
-                Version.getFirmwareVersion()?.let { parts.add(it) }
-                parts.joinToString("; ")
-            })
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 val state = SystemService.getEuiccServiceState(applicationContext)
                 appendLine()
