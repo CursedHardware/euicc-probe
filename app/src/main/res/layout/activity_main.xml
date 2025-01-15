@@ -41,14 +41,13 @@
                         android:id="@+id/device_name"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="2"
                         app:label="@string/basic_info_device" />
 
                     <View
-                        android:layout_width="0.5dp"
+                        android:layout_width="16dp"
                         android:layout_height="match_parent"
-                        android:layout_marginVertical="@dimen/basic_margin_half"
-                        android:background="@color/md_theme_secondary" />
+                        android:layout_marginVertical="@dimen/basic_margin_half" />
 
                     <app.septs.euiccprobe.ui.widget.BasicInfoView
                         android:id="@+id/android_version"
