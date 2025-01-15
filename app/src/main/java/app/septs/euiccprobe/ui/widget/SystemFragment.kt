@@ -1,15 +1,18 @@
 package app.septs.euiccprobe.ui.widget
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.septs.euiccprobe.R
 import app.septs.euiccprobe.SystemApps
 import app.septs.euiccprobe.SystemProperties
+import app.septs.euiccprobe.SystemService
 import app.septs.euiccprobe.databinding.FragmentSystemBinding
 import app.septs.euiccprobe.ui.widget.adapter.SystemPropertiesAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -25,8 +28,9 @@ import kotlinx.coroutines.withContext
 class SystemFragment : Fragment() {
     private var viewBinding: FragmentSystemBinding? = null
     private var systemPropertiesAdapter: SystemPropertiesAdapter? = null
-    private var systemProperties: MutableMap<String, String> = mutableMapOf()
-    private var systemLPAs: MutableMap<String, String> = mutableMapOf()
+    private val systemProperties: MutableMap<String, String> = mutableMapOf()
+    private val systemLPAs: MutableMap<String, String> = mutableMapOf()
+    private var eUICCSystemServiceState: SystemService.EuiccState? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,45 +60,45 @@ class SystemFragment : Fragment() {
     }
 
     private fun updateData() {
+        eUICCSystemServiceState = null
+        viewBinding?.euiccSystemServiceStatusTextView?.text = getString(R.string.unknown)
+        context?.let {
+            viewBinding?.euiccSystemServiceStatusTextView?.setTextColor(
+                ContextCompat.getColor(it, com.google.android.material.R.color.material_on_surface_disabled)
+            )
+        }
+        viewBinding?.systemLpasLiv?.restoreToUnknownEmpty()
         systemProperties.clear()
         systemPropertiesAdapter?.notifyDataSetChanged()
-        viewBinding?.systemLpasLiv?.restoreToUnknownEmpty()
+
 
         lifecycleScope.launch {
             loadData()
-            systemPropertiesAdapter?.notifyDataSetChanged()
+            viewBinding?.euiccSystemServiceStatusTextView?.text = eUICCSystemServiceState.toString()
+            if (eUICCSystemServiceState == SystemService.EuiccState.Enabled) {
+                context?.let {
+                    viewBinding?.euiccSystemServiceStatusTextView?.setTextColor(
+                        ContextCompat.getColor(it, R.color.md_theme_primary)
+                    )
+                }
+            }
             val key = systemLPAs.keys.first()
             viewBinding?.systemLpasLiv?.headlineText = key
             viewBinding?.systemLpasLiv?.supportingText = systemLPAs[key]
             viewBinding?.systemLpasLiv?.leadingIconDrawable =
                 systemLPAs[key]?.let { context?.packageManager?.getApplicationIcon(it) }
+            systemPropertiesAdapter?.notifyDataSetChanged()
         }
     }
 
     private suspend fun loadData() = withContext(Dispatchers.IO) {
-        val systemProperties: MutableMap<String, String> = mutableMapOf()
-        val properties = arrayOf(
-            "esim.enable_esim_system_ui_by_default",
-            "ro.telephony.sim_slots.count",
-            "ro.setupwizard.esim_cid_ignore",
-            // RIL
-            "gsm.version.ril-impl",
-            // Multi SIM
-            "ro.multisim.simslotcount",
-            "ro.vendor.multisim.simslotcount",
-            "persist.radio.multisim.config",
-            // Xiaomi Vendor
-            "ro.vendor.miui.support_esim"
-        )
-        SystemProperties.pick(*properties).let {
-            if (it.isEmpty()) return@let
-            for (entry in it.entries) {
-                systemProperties[entry.key] = entry.value
-            }
+        // eUICC System Service Status
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            eUICCSystemServiceState =
+                context?.let { SystemService.getEuiccServiceState(it.applicationContext) }
         }
-        this@SystemFragment.systemProperties.clear()
-        this@SystemFragment.systemProperties.putAll(systemProperties)
 
+        //System LPAs
         SystemApps.getSystemLPAs().let { pkgs ->
             if (pkgs.isEmpty()) {
                 return@let
@@ -114,6 +118,31 @@ class SystemFragment : Fragment() {
                 }
             }
         }
+
+        //System Properties
+        val systemProperties: MutableMap<String, String> = mutableMapOf()
+        SystemProperties.pick(
+            *arrayOf(
+                "esim.enable_esim_system_ui_by_default",
+                "ro.telephony.sim_slots.count",
+                "ro.setupwizard.esim_cid_ignore",
+                // RIL
+                "gsm.version.ril-impl",
+                // Multi SIM
+                "ro.multisim.simslotcount",
+                "ro.vendor.multisim.simslotcount",
+                "persist.radio.multisim.config",
+                // Xiaomi Vendor
+                "ro.vendor.miui.support_esim"
+            )
+        ).let {
+            if (it.isEmpty()) return@let
+            for (entry in it.entries) {
+                systemProperties[entry.key] = entry.value
+            }
+        }
+        this@SystemFragment.systemProperties.clear()
+        this@SystemFragment.systemProperties.putAll(systemProperties)
     }
 
     companion object {

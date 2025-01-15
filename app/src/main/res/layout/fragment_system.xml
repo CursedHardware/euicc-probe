@@ -35,12 +35,13 @@
                     android:text="@string/euicc_system_service" />
 
                 <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/euicc_system_service_status_textView"
                     style="?textAppearanceLabelLarge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAlignment="textEnd"
                     android:paddingHorizontal="@dimen/basic_margin_half"
-                    android:textColor="@color/md_theme_secondary"
+                    android:textColor="@color/material_on_surface_disabled"
                     android:text="@string/unknown" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>

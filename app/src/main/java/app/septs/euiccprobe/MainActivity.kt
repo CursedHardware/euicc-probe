@@ -107,7 +107,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    @Suppress("SpellCheckingInspection")
     private suspend fun init() = withContext(Dispatchers.Main) {
         val markdown = buildString {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -122,50 +121,7 @@ class MainActivity : AppCompatActivity() {
                     appendLine("- [${if (feature.value) "x" else " "}] ${feature.key}")
                 }
             }
-            SystemApps.getSystemLPAs().let { pkgs ->
-                if (pkgs.isEmpty()) {
-                    return@let
-                }
-                appendLine()
-                appendLine("System LPAs:")
-                for (pkg in pkgs) {
-                    val label = SystemApps.getApplicationLabel(packageManager, pkg.packageName)
-                    if (label != null) {
-                        appendLine("- $label (${pkg.packageName})")
-                    } else {
-                        appendLine("- ${pkg.packageName}")
-                    }
-                }
-            }
-            val properties = arrayOf(
-                "esim.enable_esim_system_ui_by_default",
-                "ro.telephony.sim_slots.count",
-                "ro.setupwizard.esim_cid_ignore",
-                // RIL
-                "gsm.version.ril-impl",
-                // Multi SIM
-                "ro.multisim.simslotcount",
-                "ro.vendor.multisim.simslotcount",
-                "persist.radio.multisim.config",
-                // Xiaomi Vendor
-                "ro.vendor.miui.support_esim"
-            )
-            SystemProperties.pick(*properties).let {
-                if (it.isEmpty()) return@let
-                appendLine()
-                appendLine("System Properties:")
-                for (entry in it.entries) {
-                    appendLine("- ${entry.key} = ${entry.value}")
-                }
-            }
-            OpenMobileAPI.getSlots(applicationContext).let { result ->
 
-                if (result.state == OpenMobileAPI.State.Available) {
-                    for (slot in result.slots) {
-                        appendLine("- ${slot.key} Slot: ${slot.value}")
-                    }
-                }
-            }
         }
     }
 }
