@@ -3,6 +3,7 @@ package app.septs.euiccprobe
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -12,6 +13,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import app.septs.euiccprobe.databinding.ActivityMainBinding
 import app.septs.euiccprobe.ui.widget.OpenMobileFragment
 import app.septs.euiccprobe.ui.widget.SystemFragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,7 +33,6 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         loadView()
-        updateData()
     }
 
     private fun loadView() {
@@ -74,7 +75,10 @@ class MainActivity : AppCompatActivity() {
             try {
                 updateData()
             } catch (e: Throwable) {
-
+                MaterialAlertDialogBuilder(this@MainActivity)
+                    .setTitle(resources.getString(R.string.warning))
+                    .setMessage(e.stackTraceToString())
+                    .show()
             }
         }
     }
@@ -153,14 +157,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             OpenMobileAPI.getSlots(applicationContext).let { result ->
-                appendLine()
-                appendLine("Open Mobile API:")
-                appendLine("- Backend: ${result.backend}")
-                appendLine("- State: ${result.state}")
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                    val state = OpenMobileAPI.getBypassState(applicationContext)
-                    appendLine("- Bypass: $state")
-                }
+
                 if (result.state == OpenMobileAPI.State.Available) {
                     for (slot in result.slots) {
                         appendLine("- ${slot.key} Slot: ${slot.value}")

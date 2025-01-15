@@ -20,4 +20,6 @@
     <string name="enabled">Enabled</string>
     <string name="disable">Disabled</string>
     <string name="unknown">Unknown</string>
+
+    <string name="warning">Warning</string>
 </resources>
