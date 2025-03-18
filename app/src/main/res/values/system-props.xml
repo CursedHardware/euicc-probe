@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="system_properties">
+        <item>esim.enable_esim_system_ui_by_default</item>
+        <item>ro.telephony.sim_slots.count</item>
+        <item>ro.setupwizard.esim_cid_ignore</item>
+        <item>masterclear.allow_retain_esim_profiles_after_fdr</item>
+        <item>ro.telephony.esim_slot_id</item>
+        <!-- RIL -->
+        <item>gsm.version.ril-impl</item>
+        <!-- Multi SIM -->
+        <item>ro.multisim.simslotcount</item>
+        <item>ro.vendor.multisim.simslotcount</item>
+        <item>persist.radio.multisim.config</item>
+        <!-- Xiaomi Vendor -->
+        <item>ro.vendor.miui.support_esim</item>
+        <!-- Motorola Vendor -->
+        <item>ro.vendor.esimid</item>
+        <item>ro.vendor.hw.esim</item>
+        <item>ro.vendor.hw.esimid</item>
+    </string-array>
+</resources>

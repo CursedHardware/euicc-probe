@@ -82,25 +82,13 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
-            val properties = arrayOf(
-                "esim.enable_esim_system_ui_by_default",
-                "ro.telephony.sim_slots.count",
-                "ro.setupwizard.esim_cid_ignore",
-                // RIL
-                "gsm.version.ril-impl",
-                // Multi SIM
-                "ro.multisim.simslotcount",
-                "ro.vendor.multisim.simslotcount",
-                "persist.radio.multisim.config",
-                // Xiaomi Vendor
-                "ro.vendor.miui.support_esim"
-            )
+            val properties = resources.getStringArray(R.array.system_properties)
             SystemProperties.pick(*properties).let {
                 if (it.isEmpty()) return@let
                 appendLine()
                 appendLine("System Properties:")
-                for (entry in it.entries) {
-                    appendLine("- ${entry.key} = ${entry.value}")
+                for ((name, value) in it.entries) {
+                    appendLine("- $name = $value")
                 }
             }
             OpenMobileAPI.getSlots(applicationContext).let { result ->
