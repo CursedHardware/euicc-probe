@@ -113,8 +113,18 @@ class MainActivity : AppCompatActivity() {
                     appendLine("- Bypass: $state")
                 }
                 if (result.state == OpenMobileAPI.State.Available) {
-                    for (slot in result.slots) {
-                        appendLine("- ${slot.key} Slot: ${slot.value}")
+                    for ((slot, entries) in result.slots.entries) {
+                        val allInState = entries.values.first().takeIf { state ->
+                            entries.values.all { it == state }
+                        }
+                        if (allInState != null) {
+                            appendLine("- $slot Slot: $allInState")
+                        } else {
+                            appendLine("- $slot Slot (per ISD-R AID access):")
+                            for ((applet, state) in entries.entries) {
+                                appendLine("    - ${applet.standard}: $state")
+                            }
+                        }
                     }
                 }
             }
