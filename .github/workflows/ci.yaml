@@ -23,7 +23,7 @@ jobs:
         run: sdkmanager "platforms;android-33" "build-tools;33.0.2"
       - name: Build with Gradle
         run: ./gradlew assembleRelease
-      - uses: ilharp/sign-android-release@nightly
+      - uses: ilharp/sign-android-release@v1
         name: Sign app APK
         id: sign_app
         with:
