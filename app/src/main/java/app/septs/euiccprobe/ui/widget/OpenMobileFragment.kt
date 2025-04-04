@@ -120,6 +120,6 @@ class OpenMobileFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        viewBinding = null;
+        viewBinding = null
     }
 }
