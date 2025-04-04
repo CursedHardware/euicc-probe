@@ -19,8 +19,12 @@ jobs:
           java-version: "21"
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
-      - name: Install requires platform
-        run: sdkmanager "platforms;android-33" "build-tools;33.0.2"
+      - name: Install required platform
+        run: |
+          yes | sdkmanager "platforms;android-33" "build-tools;33.0.2"
+      - name: Verify Android SDK installation
+        run: |
+          sdkmanager --list | grep "build-tools;33.0.2"
       - name: Build with Gradle
         run: ./gradlew assembleRelease
       - uses: ilharp/sign-android-release@v1
