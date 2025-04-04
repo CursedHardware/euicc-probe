@@ -1,4 +1,4 @@
-package app.septs.euiccprobe
+package app.septs.euiccprobe.tool
 
 import android.os.Build
 

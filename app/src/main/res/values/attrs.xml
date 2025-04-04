@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BasicInfoView">
+        <attr name="label" format="string" />
+        <attr name="value" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="ListItemView">
+        <attr name="leadingIcon" format="reference" /> <!-- Drawable reference -->
+        <attr name="headlineText" format="string" /> <!-- String -->
+        <attr name="supportingText" format="string" /> <!-- String -->
+    </declare-styleable>
+
+</resources>

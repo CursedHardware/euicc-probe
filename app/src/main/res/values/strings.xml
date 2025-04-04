@@ -1,3 +1,25 @@
 <resources>
     <string name="app_name">eUICC Probe</string>
+    <string name="default_text_placeholder">--</string>
+    <string name="basic_info_device">Device</string>
+    <string name="basic_info_android_version">Android Version</string>
+
+    <string name="open_mobile">Open Mobile</string>
+    <string name="open_mobile_api">Open Mobile API</string>
+    <string name="open_mobile_backend">Backend</string>
+    <string name="open_mobile_state">State</string>
+    <string name="open_mobile_bypass">Bypass</string>
+    <string name="open_mobile_sim_slots">SIM Slots</string>
+
+    <string name="system">System</string>
+    <string name="system_features">System Features</string>
+    <string name="euicc_system_service">eUICC System Service</string>
+    <string name="system_lpas">System LPAs</string>
+    <string name="system_properties">System Properties</string>
+
+    <string name="enabled">Enabled</string>
+    <string name="disable">Disabled</string>
+    <string name="unknown">Unknown</string>
+
+    <string name="warning">Warning</string>
 </resources>

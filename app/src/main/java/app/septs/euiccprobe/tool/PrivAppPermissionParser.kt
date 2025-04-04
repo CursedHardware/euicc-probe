@@ -1,7 +1,7 @@
-package app.septs.euiccprobe
+package app.septs.euiccprobe.tool
 
 import android.util.Xml
-import app.septs.euiccprobe.PrivAppPermissionParser.Companion.PrivAppPermission
+import app.septs.euiccprobe.tool.PrivAppPermissionParser.Companion.PrivAppPermission
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import java.io.File
