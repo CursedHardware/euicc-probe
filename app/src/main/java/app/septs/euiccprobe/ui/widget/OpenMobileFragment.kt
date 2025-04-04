@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import app.septs.euiccprobe.OpenMobileAPI
+import app.septs.euiccprobe.OpenMobileAPI.AppletID
+import app.septs.euiccprobe.OpenMobileAPI.SlotState
 import app.septs.euiccprobe.R
 import app.septs.euiccprobe.databinding.FragmentOpenMobileBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -53,8 +55,20 @@ class OpenMobileFragment : Fragment() {
             viewBinding?.openMobileStateLiv?.supportingText = data["state"].toString()
             viewBinding?.openMobileBypassLiv?.supportingText = data["bypass"].toString()
             viewBinding?.openMobileSimslotsLiv?.supportingText = buildString {
-                for (slot in data["simSlots"] as Map<*, *>) {
-                    appendLine("${slot.key}: ${slot.value}")
+                val slotEntries =
+                    (data["simSlots"] as Map<String, Map<AppletID, SlotState>>).entries
+                for ((slot, entries) in slotEntries) {
+                    val allInState = entries.values.first().takeIf { state ->
+                        entries.values.all { it == state }
+                    }
+                    if (allInState != null) {
+                        appendLine("- $slot Slot: $allInState")
+                    } else {
+                        appendLine("- $slot Slot (per ISD-R AID access):")
+                        for ((applet, state) in entries.entries) {
+                            appendLine("    - ${applet.standard}: $state")
+                        }
+                    }
                 }
             }
         }
@@ -67,7 +81,8 @@ class OpenMobileFragment : Fragment() {
             OpenMobileAPI.getSlots(it.applicationContext).let { result ->
                 when (result.backend) {
                     OpenMobileAPI.Backend.Builtin -> openMobileSet["backend"] = "Built-in"
-                    OpenMobileAPI.Backend.SIMAlliance -> openMobileSet["backend"] = "SIM Alliance"
+                    OpenMobileAPI.Backend.SIMAlliance -> openMobileSet["backend"] =
+                        "SIM Alliance"
                 }
 
                 when (result.state) {
