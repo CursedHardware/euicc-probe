@@ -1,3 +1,4 @@
+
 name: CI
 
 on:
@@ -19,7 +20,11 @@ jobs:
           java-version: "21"
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
-      - name: Install requires platform
+        with:
+          api-level: 33
+          build-tools: 33.0.2
+          ndk: 21.4.7075529
+      - name: Install required platform tools
         run: sdkmanager "platforms;android-33" "build-tools;33.0.2"
       - name: Build with Gradle
         run: ./gradlew assembleRelease
