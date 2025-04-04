@@ -1,4 +1,4 @@
-package app.septs.euiccprobe.ui.widget.tool
+package app.septs.euiccprobe.tool
 
 object CustomTextUtil {
     /**

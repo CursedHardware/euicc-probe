@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import androidx.appcompat.widget.LinearLayoutCompat
 import app.septs.euiccprobe.R
 import app.septs.euiccprobe.databinding.BasicInfoViewBinding
-import app.septs.euiccprobe.ui.widget.tool.CustomTextUtil.orDefault
+import app.septs.euiccprobe.tool.CustomTextUtil.orDefault
 
 class BasicInfoView @JvmOverloads constructor(
     context: Context,

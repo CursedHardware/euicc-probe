@@ -1,4 +1,4 @@
-package app.septs.euiccprobe.ui.widget
+package app.septs.euiccprobe.ui.fragment
 
 import android.os.Build
 import android.os.Bundle
@@ -10,12 +10,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.septs.euiccprobe.R
-import app.septs.euiccprobe.SystemApps
-import app.septs.euiccprobe.SystemProperties
-import app.septs.euiccprobe.SystemService
+import app.septs.euiccprobe.tool.SystemApps
+import app.septs.euiccprobe.tool.SystemProperties
+import app.septs.euiccprobe.tool.SystemService
 import app.septs.euiccprobe.databinding.FragmentSystemBinding
-import app.septs.euiccprobe.ui.widget.adapter.SystemFeaturesAdapter
-import app.septs.euiccprobe.ui.widget.adapter.SystemPropertiesAdapter
+import app.septs.euiccprobe.ui.adapter.SystemFeaturesAdapter
+import app.septs.euiccprobe.ui.adapter.SystemPropertiesAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

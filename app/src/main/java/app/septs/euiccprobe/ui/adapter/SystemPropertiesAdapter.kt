@@ -1,4 +1,4 @@
-package app.septs.euiccprobe.ui.widget.adapter
+package app.septs.euiccprobe.ui.adapter
 
 import android.view.View
 import android.view.ViewGroup

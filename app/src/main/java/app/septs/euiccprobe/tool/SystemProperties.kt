@@ -1,4 +1,4 @@
-package app.septs.euiccprobe
+package app.septs.euiccprobe.tool
 
 object SystemProperties {
     operator fun get(name: String) = Runtime.getRuntime()

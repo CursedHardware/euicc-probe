@@ -1,4 +1,4 @@
-package app.septs.euiccprobe.ui.widget
+package app.septs.euiccprobe.ui.fragment
 
 import android.os.Build
 import android.os.Bundle
@@ -7,9 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import app.septs.euiccprobe.OpenMobileAPI
-import app.septs.euiccprobe.OpenMobileAPI.AppletID
-import app.septs.euiccprobe.OpenMobileAPI.SlotState
+import app.septs.euiccprobe.tool.OpenMobileAPI
+import app.septs.euiccprobe.tool.OpenMobileAPI.AppletID
+import app.septs.euiccprobe.tool.OpenMobileAPI.SlotState
 import app.septs.euiccprobe.R
 import app.septs.euiccprobe.databinding.FragmentOpenMobileBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder

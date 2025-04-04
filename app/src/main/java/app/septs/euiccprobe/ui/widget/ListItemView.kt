@@ -8,7 +8,7 @@ import android.widget.FrameLayout
 import androidx.core.view.isVisible
 import app.septs.euiccprobe.R
 import app.septs.euiccprobe.databinding.ListItemViewBinding
-import app.septs.euiccprobe.ui.widget.tool.CustomTextUtil.orDefault
+import app.septs.euiccprobe.tool.CustomTextUtil.orDefault
 
 class ListItemView @JvmOverloads constructor(
     context: Context,

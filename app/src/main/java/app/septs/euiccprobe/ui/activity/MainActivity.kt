@@ -1,4 +1,4 @@
-package app.septs.euiccprobe
+package app.septs.euiccprobe.ui.activity
 
 import android.os.Build
 import android.os.Bundle
@@ -9,9 +9,11 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import app.septs.euiccprobe.R
+import app.septs.euiccprobe.tool.Version
 import app.septs.euiccprobe.databinding.ActivityMainBinding
-import app.septs.euiccprobe.ui.widget.OpenMobileFragment
-import app.septs.euiccprobe.ui.widget.SystemFragment
+import app.septs.euiccprobe.ui.fragment.OpenMobileFragment
+import app.septs.euiccprobe.ui.fragment.SystemFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.Dispatchers
