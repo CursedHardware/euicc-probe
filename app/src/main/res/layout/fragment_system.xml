@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragment.SystemFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/basic_margin"
+            app:cardBackgroundColor="@color/md_theme_primaryContainer"
+            app:cardCornerRadius="100dp"
+            app:contentPaddingBottom="@dimen/building_blocks_nav_item_padding_vertical"
+            app:contentPaddingLeft="@dimen/basic_margin"
+            app:contentPaddingRight="@dimen/basic_margin"
+            app:contentPaddingTop="@dimen/building_blocks_nav_item_padding_vertical"
+            app:strokeWidth="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="?textAppearanceLabelLarge"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/euicc_system_service" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/euicc_system_service_status_textView"
+                    style="?textAppearanceLabelLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="textEnd"
+                    android:paddingHorizontal="@dimen/basic_margin_half"
+                    android:textColor="@color/material_on_surface_disabled"
+                    android:text="@string/unknown" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.textview.MaterialTextView
+            style="?textAppearanceLabelSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/basic_margin"
+            android:layout_marginTop="@dimen/basic_margin"
+            android:layout_marginEnd="@dimen/basic_margin"
+            android:layout_marginBottom="@dimen/basic_margin_half"
+            android:text="@string/system_features"
+            android:textColor="@color/md_theme_primary" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/system_features_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            style="?textAppearanceLabelSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/basic_margin"
+            android:layout_marginTop="@dimen/basic_margin"
+            android:layout_marginEnd="@dimen/basic_margin"
+            android:layout_marginBottom="@dimen/basic_margin_half"
+            android:text="@string/system_lpas"
+            android:textColor="@color/md_theme_primary" />
+
+        <app.septs.euiccprobe.ui.widget.ListItemView
+            android:id="@+id/system_lpas_liv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:headlineText="@string/unknown" />
+
+        <com.google.android.material.textview.MaterialTextView
+            style="?textAppearanceLabelSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/basic_margin"
+            android:layout_marginTop="@dimen/basic_margin"
+            android:layout_marginEnd="@dimen/basic_margin"
+            android:layout_marginBottom="@dimen/basic_margin_half"
+            android:text="@string/system_properties"
+            android:textColor="@color/md_theme_primary" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/system_properties_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            tools:listitem="@layout/list_item_view"
+            tools:itemCount="4"/>
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>
