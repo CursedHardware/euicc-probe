@@ -1,4 +1,3 @@
-
 name: CI
 
 on:
@@ -27,11 +26,8 @@ jobs:
           build-tools: 33.0.2
           ndk: 21.4.7075529
 
-      - name: Verify Android SDK installation
-        run: |
-          sdkmanager --list || true
-          echo "ANDROID_HOME=$ANDROID_HOME"
-          echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"
+      - name: Set ANDROID_HOME
+        run: echo "ANDROID_HOME=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
 
       - name: Install required platform tools
         run: sdkmanager "platforms;android-33" "build-tools;33.0.2"
@@ -39,19 +35,19 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew assembleRelease
 
-      - uses: ilharp/sign-android-release@v1 # Or use @nightly
+      - uses: ilharp/sign-android-release@v1
         name: Sign app APK
         id: sign_app
         with:
+          buildToolsVersion: 33.0.2
           releaseDir: app/build/outputs/apk/release
           signingKey: ${{ secrets.KEYSTORE }}
-          keyAlias: ${{ secrets.KEYSTORE_ALIAS }}
           keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
-          buildToolsVersion: 33.0.0
+          keyAlias: ${{ secrets.KEYSTORE_ALIAS }}
 
       - name: Upload Packages
         uses: actions/upload-artifact@v4
         if: success()
         with:
-          name: Signed app bundle
+          name: eUICC Probe
           path: ${{ steps.sign_app.outputs.signedFile }}
