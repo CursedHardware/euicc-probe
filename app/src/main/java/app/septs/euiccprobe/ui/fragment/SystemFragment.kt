@@ -121,6 +121,7 @@ class SystemFragment : Fragment() {
             if (pkgs.isEmpty()) {
                 return@let
             }
+            systemLPAs.clear()
             for (pkg in pkgs) {
                 val label = context?.let {
                     SystemApps.getApplicationLabel(
@@ -128,7 +129,6 @@ class SystemFragment : Fragment() {
                         pkg.packageName
                     )
                 }
-                systemLPAs.clear()
                 if (label != null) {
                     systemLPAs[label] = pkg.packageName
                 } else {

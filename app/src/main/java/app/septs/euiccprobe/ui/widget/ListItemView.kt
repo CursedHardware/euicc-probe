@@ -32,9 +32,12 @@ class ListItemView @JvmOverloads constructor(
             }
         }
 
+    private var _leadingIconDrawable: Drawable? = null
+
     var leadingIconDrawable: Drawable?
-        get() = binding.leadingIcon.drawable
+        get() = _leadingIconDrawable
         set(value) {
+            _leadingIconDrawable = value
             if (value != null) {
                 binding.leadingIcon.setImageDrawable(value)
                 binding.leadingIcon.tag = value
