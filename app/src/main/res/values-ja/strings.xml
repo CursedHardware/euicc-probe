@@ -1,0 +1,21 @@
+<resources>
+  <string name="app_name">eUICC Probe</string>
+  <string name="default_text_placeholder">--</string>
+  <string name="basic_info_device">デバイス</string>
+  <string name="basic_info_android_version">Android バージョン</string>
+  <string name="open_mobile">Open Mobile</string>
+  <string name="open_mobile_api">Open Mobile API</string>
+  <string name="open_mobile_backend">バックエンド</string>
+  <string name="open_mobile_state">状態</string>
+  <string name="open_mobile_bypass">バイパス</string>
+  <string name="open_mobile_sim_slots">SIM スロット</string>
+  <string name="system">システム</string>
+  <string name="system_features">システムの機能</string>
+  <string name="euicc_system_service">eUICC システムサービス</string>
+  <string name="system_lpas">システム LPA</string>
+  <string name="system_properties">システムプロパティ</string>
+  <string name="enabled">有効</string>
+  <string name="disable">無効</string>
+  <string name="unknown">不明</string>
+  <string name="warning">警告</string>
+</resources>
